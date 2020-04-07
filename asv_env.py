@@ -63,7 +63,15 @@ class ASVEnv(gym.Env):
     def get_reward(self):
         asv_pos = self.asv.position.data
         aim_pos = self.aim.position
-        return -np.sum(np.power((asv_pos - aim_pos), 2))
+        d = np.sum(np.power((asv_pos - aim_pos), 2))
+        r = np.exp(-d/100)-1
+        return r
+
+    def get_reward_punish(self):
+        asv_pos = self.asv.position.data
+        aim_pos = self.aim.position
+        d = np.sum(np.power((asv_pos - aim_pos), 2))/10
+        return -d
 
     def get_done(self):
         if (self.asv.position.x < self.playground_shape[0] or self.asv.position.x > self.playground_shape[1] or
@@ -87,7 +95,7 @@ class ASVEnv(gym.Env):
         done = self.get_done()
         # 注意奖励永远是根据当前aim坐标和当前asv坐标计算，当前aim尚未移动
         if done:
-            reward = 5*self.get_reward()
+            reward = self.get_reward_punish()
         else:
             reward = self.get_reward()
         # 计算完奖励之后，可以移动aim坐标

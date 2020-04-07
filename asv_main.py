@@ -23,7 +23,7 @@ class RandAgent():
 
 
 MAX_EPISODE = 10000000
-MAX_DECAYEP = 500
+MAX_DECAYEP = 1000
 MAX_STEP = 100
 
 LR_A = 0.0005
@@ -51,7 +51,7 @@ def rl_loop(need_load=True):
     for e in range(START_EPISODE, MAX_EPISODE):
         cur_state = env.reset()
         cum_reward = 0
-        noise_decay_rate = max((MAX_DECAYEP - e) / MAX_DECAYEP, 0.05)
+        noise_decay_rate = max((MAX_DECAYEP - e) / MAX_DECAYEP, 0.1)
         agent.build_noise(0, 1 * noise_decay_rate)  # 根据给定的均值和decay的方差，初始化噪声发生器
 
         for step in range(MAX_STEP):
@@ -60,7 +60,7 @@ def rl_loop(need_load=True):
             
             next_state, reward, done, info = env.step(action)
             
-            reward = float(reward / 10)
+            # reward = float(reward / 10)
 
             agent.add_step(cur_state, action, reward, done, next_state)
             agent.learn_batch()
