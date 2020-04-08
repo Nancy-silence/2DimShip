@@ -68,10 +68,7 @@ class ASVEnv(gym.Env):
         return r
 
     def get_reward_punish(self):
-        asv_pos = self.asv.position.data
-        aim_pos = self.aim.position
-        d = np.sum(np.power((asv_pos - aim_pos), 2))/10
-        return -d
+        return -5
 
     def get_done(self):
         if (self.asv.position.x < self.playground_shape[0] or self.asv.position.x > self.playground_shape[1] or

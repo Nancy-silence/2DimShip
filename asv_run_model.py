@@ -41,7 +41,7 @@ def rl_loop(need_load=True):
 
             next_state, reward, done, info = env.step(action)
 
-            reward = float(reward / 10)
+            # reward = float(reward / 10)
 
             info = {
                 "cur_state": list(cur_state), "action": list(action),
